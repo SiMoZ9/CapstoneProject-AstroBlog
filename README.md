@@ -25,3 +25,29 @@ N.B I file .env ovviamente non è disponibile nel commit
 
 
 # Come lanciare
+
+Prima clonare la repo
+
+```
+git clone https://github.com/SiMoZ9/CapstoneProject-AstroBlog
+cd CapstoneProject-AstroBlog
+```
+
+Installare le dipendenze
+
+```
+cd [be or fe]
+yarn install
+```
+
+### Per FE
+
+```
+yarn start
+```
+
+### Per BE
+
+```
+yarn dev
+```
