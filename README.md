@@ -22,6 +22,7 @@ Il progetto utilizza varie tecncologie:
 Yarn per la gestione dei pacchetti
 
 N.B I file .env ovviamente non è disponibile nel commit
+N.B L'intero progetto è stato fatto su una macchina Arch Linux
 
 
 # Come lanciare
