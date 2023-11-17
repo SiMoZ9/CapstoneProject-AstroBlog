@@ -3,8 +3,9 @@
 Here's my capstone project for Epicode WD-PT course.
 
 Roadmap
-- [ ] Post model & post routes
+- [ x ] Post model & post routes
 -   Implement AstronomyAPI
-- [ ] User model & user routes
-- [ ] Login system
-- [ ] Protected routes
+- [ x ] User model & user routes
+- [ x ] Login system
+- [ x ] Protected routes
+- ... Altre cose
