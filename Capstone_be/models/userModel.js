@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const socialSchema = new mongoose.Schema({
-    facebook: {
+    meta: {
         type: String
     },
 

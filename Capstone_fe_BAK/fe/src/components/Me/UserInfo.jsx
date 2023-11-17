@@ -1,4 +1,4 @@
-import React, {useContext, useState, useRef, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {UserProvider} from "../../context/UserContext";
 import {Button, Input, Typography} from "@material-tailwind/react";
 import TimezoneSelect from 'react-timezone-select'
@@ -17,7 +17,31 @@ const UserInfo = () => {
     const [date, setDate] = useState(new Date())
     const [formData, setFormData] = useState({})
     const [editData, setEditData] = useState(null)
+
+    const [file, setFile] = useState(null)
+
+    const [socials, setSocials] = useState({})
+
     const navigate = useNavigate()
+
+    const onChangeSetFile = (e) => {
+        setFile(e.target.files[0])
+    }
+    const uploadFile = async (cover) => {
+        const fileData = new FormData()
+        fileData.append('mainPic', cover)
+
+        try {
+            const response = await fetch(`${process.env.REACT_APP_ENDPOINT}/skyPost/cloudUpload`, {
+                method: "POST",
+                body: fileData
+            })
+            console.log(fileData)
+            return await response.json()
+        } catch (error) {
+            console.log(error, 'Errore in uploadFile')
+        }
+    }
 
     const handleInputChange = (e) => {
         const {name, value} = e.target
@@ -28,6 +52,17 @@ const UserInfo = () => {
         })
 
         console.log(formData)
+    }
+
+    const handleSocialInputChange = (e) => {
+        const {name, value} = e.target
+
+        setSocials({
+            ...socials,
+            [name]: value
+        })
+
+        console.log(socials)
     }
 
     const handleSubmit = async (e) => {
@@ -55,9 +90,59 @@ const UserInfo = () => {
 
     const session = useSession()
 
+
+    const onClickHandler = async (e) => {
+        e.preventDefault()
+
+        const finalBody = {
+            socials: {
+                meta: socials.meta,
+                x: socials.x,
+                ig: socials.ig,
+            }
+        }
+
+        const res = await fetch(`${process.env.REACT_APP_ENDPOINT}/users/${JSON.parse(localStorage.getItem('loggedInUser'))}`, {
+            method: 'PATCH',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": JSON.parse(localStorage.getItem('loggedInUser'))
+            },
+            body: JSON.stringify(finalBody)
+        })
+
+        console.log(finalBody)
+
+    }
+
     useEffect(() => {
         if (!session) navigate('/')
     }, [])
+
+    const submitNewPic = async (e) => {
+        e.preventDefault()
+
+        const uploadCover = await uploadFile(file)
+
+        const finalBody = {
+            avatar: uploadCover.url
+        }
+
+        try {
+            const res = await fetch(`${process.env.REACT_APP_ENDPOINT}/users/${JSON.parse(localStorage.getItem('loggedInUser'))}`, {
+                method: 'PATCH',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": JSON.parse(localStorage.getItem('loggedInUser'))
+                },
+                body: JSON.stringify(finalBody)
+            })
+        } catch (err) {
+            setError(err)
+        }
+
+        console.log(finalBody)
+    }
 
     return (
         <div>
@@ -82,9 +167,12 @@ const UserInfo = () => {
                                                 {user.userEmail.userName}
                                             </Typography>
 
-                                            <Button className="text-center">
-                                                Change picture
-                                            </Button>
+                                            <form encType="multipart/form-data" onSubmit={submitNewPic}>
+                                                <input type="file" onChange={onChangeSetFile} className="w-20"/>
+                                                <Button className="text-center" type="submit">
+                                                    Change picture
+                                                </Button>
+                                            </form>
 
                                         </div>
                                     </div>
@@ -115,6 +203,10 @@ const UserInfo = () => {
                                             <PiMetaLogo className="mr-4"/>
                                             <div>
                                                 <Typography variant="h6">Meta</Typography>
+                                                <Input name="meta" onChange={handleSocialInputChange}/>
+                                                <Button className="mt-2" onClick={onClickHandler}>
+                                                    Add Meta account
+                                                </Button>
                                                 <Link to="#">
                                                     {
                                                         user.userEmail.socials && user.userEmail.socials.facebook &&
@@ -130,6 +222,11 @@ const UserInfo = () => {
                                             <PiInstagramLogo className="mr-4"/>
                                             <div>
                                                 <Typography variant="h6">Instagram</Typography>
+
+                                                <Input name="ig" onChange={handleSocialInputChange}/>
+                                                <Button className="mt-2" onClick={onClickHandler}>
+                                                    Add Instagram account
+                                                </Button>
                                                 <Link to="#">
                                                     {
                                                         user.userEmail.socials && user.userEmail.socials.ig &&
@@ -145,6 +242,10 @@ const UserInfo = () => {
                                             <RiTwitterXLine className="mr-4"/>
                                             <div>
                                                 <Typography variant="h6">X</Typography>
+                                                <Input name="x" onChange={handleSocialInputChange}/>
+                                                <Button className="mt-2" onClick={onClickHandler}>
+                                                    Add X account
+                                                </Button>
                                                 <Link to="#">
                                                     {
                                                         user.userEmail.socials && user.userEmail.socials.x &&
@@ -227,13 +328,36 @@ const UserInfo = () => {
                                                 changes</Button>
                                         </form>
                                     </div>
+
+                                </div>
+                                <div className="flex flex-col lg:flex-row items-center justify-center mt-4">
+                                    <Button color="red" onClick={
+                                        async () => {
+                                            try {
+                                                await fetch(`${process.env.REACT_APP_ENDPOINT}/users/${user.userEmail._id}`, {
+                                                    method: "DELETE",
+                                                    headers: {
+                                                        "Content-Type": "application/json",
+                                                        "Authorization": JSON.parse(localStorage.getItem('loggedInUser'))
+                                                    }
+                                                })
+
+                                                localStorage.clear()
+                                                navigate('/')
+
+                                            } catch (e) {
+                                                console.log(e)
+                                            }
+                                    }}>
+                                        Delete account
+                                    </Button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             )}
+
         </div>
     )
 }

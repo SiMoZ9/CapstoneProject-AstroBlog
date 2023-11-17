@@ -11,7 +11,9 @@ function PostCard(
         id,
         description,
         linkTo,
-        buttonText
+        buttonText,
+        deleteButton,
+        deleteFunc
     }
 ) {
     return (
@@ -46,6 +48,11 @@ function PostCard(
                 <Link to={linkTo}>
                     <Button>{buttonText}</Button>
                 </Link>
+                {deleteButton &&
+                    <Button className="ml-2" onClick={deleteFunc}>
+                        Delete
+                    </Button>
+                }
             </CardFooter>
         </Card>
     );

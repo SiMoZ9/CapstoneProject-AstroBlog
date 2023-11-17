@@ -23,6 +23,16 @@ const MyPosts = () => {
         }
     })
 
+    let id = ""
+
+    const deletePost = useFetch(`${process.env.REACT_APP_ENDPOINT}/skyPost/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": JSON.parse(localStorage.getItem('loggedInUser'))
+        }
+    })
+
     useEffect(() => {
         setLoading(true)
         fetchMyPosts.then((res) => {
@@ -92,6 +102,22 @@ const MyPosts = () => {
                             cover={post.mainPic}
                             buttonText={"Edit post"}
                             linkTo={`/skyPost/edit/${post._id}`}
+                            deleteButton={true}
+                            deleteFunc={
+                            async () => {
+                                try {
+                                    await fetch(`${process.env.REACT_APP_ENDPOINT}/skyPost/delete/${post._id}`, {
+                                        method: "DELETE",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            "Authorization": JSON.parse(localStorage.getItem('loggedInUser'))
+                                        }
+                                    })
+                                    window.location.reload(true)
+                                } catch (e) {
+                                    console.log(e)
+                                }
+                            }}
                         />
                     ))}
                 </div>

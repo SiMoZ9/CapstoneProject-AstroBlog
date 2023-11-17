@@ -64,9 +64,9 @@ export const LoginForm = ({handleSubmit, handleInputChange, field1, field2}) => 
                     </form>
 
                     <p className="mt-10 text-center text-sm text-white">
-                        Registered?{' '}
+                        Don't have an account?{' '}
                         <Link to="/signup" className="font-semibold leading-6 text-blue_gray-200 hover:text-blue_gray-100">
-                            Login now!
+                            Create it!
                         </Link>
                     </p>
                 </div>
