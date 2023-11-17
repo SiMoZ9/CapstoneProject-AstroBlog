@@ -3,6 +3,8 @@
 Il mio progetto finale: AstroBlog
 Un progetto nato dalla passione dell'astrofotografia e l'amore della scienza in generale.
 
+Sito deployato: https://peaceful-flan-e46bd7.netlify.app/
+
 La necessità era quella di creare un progetto per la nostra pagina Instagram.
 
 Il progetto utilizza varie tecncologie:
