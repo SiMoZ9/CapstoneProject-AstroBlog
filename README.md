@@ -1,5 +1,7 @@
 # CapstoneProject-AstroBlog
 
+#### Ho dovuto per forza unire tutto in una repo per la consegna
+
 Il mio progetto finale: AstroBlog
 Un progetto nato dalla passione dell'astrofotografia e l'amore della scienza in generale.
 
