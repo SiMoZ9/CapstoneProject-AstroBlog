@@ -18,3 +18,10 @@ Il progetto utilizza varie tecncologie:
 - ExpressJS
 - MongoDB
 - Mongoose
+
+Yarn per la gestione dei pacchetti
+
+N.B I file .env ovviamente non è disponibile nel commit
+
+
+# Come lanciare
